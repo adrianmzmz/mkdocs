@@ -1,0 +1,134 @@
+#MIT License
+#Copyright (c) 2022 INFOTEC DAAP
+
+# Versioning
+project:
+  license: ""
+  copyright: ""
+  author: INFOTEC DAAP
+  version: 1.0.0
+
+# Project information
+site_name: Lineamientos Infraestructura
+
+theme:
+  name: material
+  # Customization
+  # https://squidfunk.github.io/mkdocs-material/customization/
+  custom_dir: overrides
+  language: es
+  # Repositorio
+  icon:
+    repo: fontawesome/brands/gitlab
+  # Menu de navegacion
+  features:
+    - navigation.top
+    - navigation.tabs
+    - navigation.tabs.sticky
+    - navigation.sections
+    - navigation.expand
+    - navigation.tracking
+    # Anotaciones en codigo
+    - content.code.annotate
+    - content.tabs.link
+    - content.code.copy
+
+  # 404 page
+  static_templates:
+    - 404.html
+  
+  palette:
+    # Modo oscuro
+    - media: "(prefers-color-scheme: light)" 
+      scheme: claro
+      toggle:
+        icon: material/weather-night
+        name: Cambiar al modo oscuro
+    - media: "(prefers-color-scheme: dark)" 
+      scheme: slate
+      toggle:
+        icon: material/weather-sunny
+        name: Cambiar al modo claro
+
+  # Cambio de logo
+  logo: assets/imagenes/logo_infotec.png
+
+# Options
+extra:
+  # URL del logo
+  homepage: https://www.infotec.mx/es/Infotec/
+  social:
+    - icon: octicons/mail-24
+      link: mailto:arquitectura.daap@gmail.com
+  # Variables personalizadas
+  harbor: https://harbor-gep.infotec.mx
+  gitlab: https://gitlab-gep.infotec.mx
+
+# Styles
+extra_css:
+  - assets/stylesheets/extra.css
+
+# Plugins
+plugins:
+  - search:
+      lang: es
+      prebuild_index: true
+  # Fechas de actualización de cada página
+  - git-revision-date-localized:
+      locale: es
+      type: date
+      fallback_to_build_date: true
+  # GLightbox
+  # https://blueswen.github.io/mkdocs-glightbox/
+  - glightbox:
+       touchNavigation: true
+       loop: false
+       effect: zoom
+       width: 100%
+       height: auto
+       zoomable: true
+       draggable: true
+  # Macros
+  # https://jimandreas.github.io/mkdocs-material/reference/variables/
+  - macros
+
+# Extensions
+markdown_extensions:
+  # Extensiones iconos
+  # https://squidfunk.github.io/mkdocs-material/reference/icons-emojis/?h=icons
+  - attr_list
+  - pymdownx.emoji:
+      emoji_index: !!python/name:materialx.emoji.twemoji
+      emoji_generator: !!python/name:materialx.emoji.to_svg
+  # Extensiones de formato bloque de código
+  # https://squidfunk.github.io/mkdocs-material/reference/code-blocks/
+  - pymdownx.highlight:
+      anchor_linenums: true
+  - pymdownx.inlinehilite
+  # Tooltips
+  # https://squidfunk.github.io/mkdocs-material/reference/tooltips/
+  - abbr
+  - pymdownx.snippets:
+      auto_append:
+          - includes/abbreviations.md
+  - pymdownx.superfences
+  - pymdownx.tabbed:
+      alternate_style: true
+  - footnotes
+
+# Page tree
+nav:
+  - Inicio:
+    - index.md
+    - inicio/herramientas.md
+    - inicio/lineamientos.md
+    - inicio/colaboracion.md
+  - Kubernetes:
+    - kubernetes/index.md
+    - Rancher:
+      - kubernetes/rancher/index.md
+      - Prueba de concepto:
+        - kubernetes/rancher/rancher-instalacion.md
+    - Despliegue:
+      - kubernetes/ejemplo-sicosel/index.md
+      - kubernetes/ejemplo-sicosel/instalacion.md
