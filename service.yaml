@@ -1,0 +1,69 @@
+# ... Deployment YAML definition
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: control-gestion-back
+  namespace: dev-scg
+  labels:
+    app: control-gestion-back
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: control-gestion-back
+  template:
+    metadata:
+      labels:
+        app: control-gestion-back
+    spec:
+      containers:
+        - name: control-gestion-back
+          # Cambiar por el nombre de la imagen en repositorio utilizado
+          image: harbor-gep.infotec.mx/scg/control-gestion-back:1.0.33
+          #imagePullPolicy: IfNotPresent
+          imagePullPolicy: Always
+          ports:
+            - containerPort: 9000
+          envFrom:
+          - configMapRef:
+              name: configmap-laravel
+          volumeMounts:
+          - mountPath: /var/www/storage/app
+            name: dev-scg-pvc
+        - name: control-gestion-back-webserver
+          image: nginx:alpine
+          ports:
+          - containerPort: 80
+          volumeMounts:
+            - name: configmap-nginx
+              mountPath: /etc/nginx/conf.d/default.conf
+              subPath: default.conf
+      volumes:
+        - name: configmap-nginx
+          configMap:
+            name: configmap-nginx
+        - name: dev-scg-pvc
+          persistentVolumeClaim:
+            claimName: dev-scg-pvc
+      imagePullSecrets:
+        # Cambiar por el nombre del Secret que almacenará los datos de acceso al repositorio utilizado
+        - name: harbor-infotec
+      restartPolicy: Always
+
+---
+# ... Service YAML definition
+apiVersion: v1
+kind: Service
+metadata:
+  name: control-gestion-back
+  namespace: dev-scg
+  labels:
+    app: control-gestion-back
+spec:
+  selector:
+    app: control-gestion-back
+  ports:
+    - name: "80"
+      port: 80
+      targetPort: 80
+# Jenkins BUILD_ID=70
